@@ -22,15 +22,34 @@ const searchUser= async (user)=>{
     //toggle error
 toggleError(false,'')
     //setloading(true)
+    setLoading(true)
     const response =await axios.get(`${rootUrl}/users/${user}`)
     .catch(err=>console.log(err))
     console.log(response)
     if(response){
         setGithubUser(response.data)
+       const {login,followers_url}=response.data;
+     /*axios(`${rootUrl}/users/${login}/repos?per_page=100`)
+     .then(res=>setRepos(res.data))
+
+     axios(`${followers_url}?per_page=100`)
+     .then(res=>setFollowers(res.data))*/
+
+     await Promise.allSettled([axios(`${rootUrl}/users/${login}/repos?per_page=100`),
+     axios(`${followers_url}?per_page=100`)])
+     .then(result=>{
+         setRepos(result[0].value.data)
+         setFollowers(result[1].value.data)
+     })
+     .catch(err=>console.log(err))
+
+        
     }else{
         toggleError(true,'there is no such user')
     }
-
+     
+    checkRequest();
+    setLoading(false);
 }
 //check rate
 const checkRequest=()=>{
@@ -62,7 +81,8 @@ useEffect(checkRequest,[])
             followers,
             request,
             error,
-            searchUser
+            searchUser,
+            loading
         }}>
             {props.children}
         </GithubContext.Provider>

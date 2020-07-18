@@ -38,7 +38,6 @@ let {stars,forks}=repos.reduce((total,item)=>{
   stars:{},
   forks:{}
 })
-console.log(forks)
 stars=Object.values(stars).slice(-5).reverse();
 forks=Object.values(forks).slice(-5).reverse();
 
