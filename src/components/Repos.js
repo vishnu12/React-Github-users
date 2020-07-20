@@ -6,7 +6,7 @@ const Repos = () => {
 
 const {repos}=useContext(GithubContext)
 const languages=repos.reduce((total,item)=>{
-  const {language,stargazers_count}=item;
+const {language,stargazers_count}=item;
   if(!language) return total;
  
   if(!total[language]){
@@ -33,7 +33,7 @@ let {stars,forks}=repos.reduce((total,item)=>{
    total.stars[stargazers_count]={label:name,value:stargazers_count}
    total.forks[forks]={label:name,value:forks}
   return total;
-  console.log(total)
+  
 },{
   stars:{},
   forks:{}
